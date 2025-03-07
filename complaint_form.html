@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="flex justify-between items-center bg-purple-600 text-white p-4 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold">SmartCity</h1>
+        <h1 class="text-2xl font-bold">Complaint Form</h1>
+    </div>
+
+    <form class="bg-white p-6 mt-6 shadow-lg rounded-lg" id="complaintForm">
+        <h2 class="text-xl font-semibold mb-4">Complainant Information</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label for="name" class="block text-gray-700">Name</label>
+                <input type="text" id="name" placeholder="Enter your name" class="w-full p-2 border rounded-md">
+                <p id="nameError" class="text-red-500 text-sm mt-1"></p>
+            </div>
+            <div>
+                <label for="date" class="block text-gray-700">Date</label>
+                <input type="date" id="date" class="w-full p-2 border rounded-md">
+            </div>
+            <div>
+                <label for="email" class="block text-gray-700">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" class="w-full p-2 border rounded-md">
+                <p id="emailError" class="text-red-500 text-sm mt-1"></p>
+            </div>
+            <div>
+                <label for="contact" class="block text-gray-700">Contact</label>
+                <input type="tel" id="contact" placeholder="Enter your contact" class="w-full p-2 border rounded-md">
+                <p id="contactError" class="text-red-500 text-sm mt-1"></p>
+            </div>
+        </div>
+
+        <h2 class="text-xl font-semibold mt-6 mb-4">Complaint Details</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label for="complaintID" class="block text-gray-700">Complaint ID</label>
+                <input type="text" id="complaintID" placeholder="Auto-generated ID" class="w-full p-2 border rounded-md" disabled>
+            </div>
+            <div>
+                <label for="issueType" class="block text-gray-700">Issue Type</label>
+                <select id="issueType" class="w-full p-2 border rounded-md">
+                    <option value="">Select Issue</option>
+                    <option>Potholes</option>
+                    <option>Sanitation</option>
+                    <option>Water Supply</option>
+                    <option>Garbage Collection</option>
+                    <option>Street Lights</option>
+                    <option>Traffic Management</option>
+                </select>
+                <p id="issueError" class="text-red-500 text-sm mt-1"></p>
+            </div>
+            <div class="col-span-2">
+                <label for="location" class="block text-gray-700">Location of Issue</label>
+                <input type="text" id="location" placeholder="Enter location details" class="w-full p-2 border rounded-md">
+                <p id="locationError" class="text-red-500 text-sm mt-1"></p>
+            </div>
+            <div class="col-span-2">
+                <label for="description" class="block text-gray-700">Description</label>
+                <textarea id="description" class="w-full p-2 border rounded-md" rows="4" placeholder="Describe the issue..."></textarea>
+                <p id="descError" class="text-red-500 text-sm mt-1"></p>
+            </div>
+            <div>
+                <label for="attachment" class="block text-gray-700">Attach Image (optional)</label>
+                <input type="file" id="attachment" class="w-full p-2 border rounded-md">
+            </div>
+        </div>
+
+        <div class="flex gap-4 mt-6">
+            <button type="submit" class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition duration-300">
+                Submit
+            </button>
+            <button type="reset" class="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition duration-300">
+                Reset
+            </button>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById("complaintForm").addEventListener("submit", function(event) {
+            let valid = true;
+
+            // Name Validation
+            const name = document.getElementById("name").value.trim();
+            const nameError = document.getElementById("nameError");
+            if (!/^[A-Za-z\s]+$/.test(name)) {
+                nameError.innerText = "Only letters are allowed in Name";
+                valid = false;
+            } else {
+                nameError.innerText = "";
+            }
+
+            // Email Validation
+            const email = document.getElementById("email").value.trim();
+            const emailError = document.getElementById("emailError");
+            if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+                emailError.innerText = "Enter a valid email address";
+                valid = false;
+            } else {
+                emailError.innerText = "";
+            }
+
+            // Contact Validation
+            const contact = document.getElementById("contact").value.trim();
+            const contactError = document.getElementById("contactError");
+            if (!/^[0-9]+$/.test(contact)) {
+                contactError.innerText = "Only numbers are allowed in Contact";
+                valid = false;
+            } else {
+                contactError.innerText = "";
+            }
+
+            // Issue Type Validation
+            const issueType = document.getElementById("issueType").value;
+            const issueError = document.getElementById("issueError");
+            if (issueType === "") {
+                issueError.innerText = "Please select an issue type";
+                valid = false;
+            } else {
+                issueError.innerText = "";
+            }
+
+            // Location Validation
+            const location = document.getElementById("location").value.trim();
+            const locationError = document.getElementById("locationError");
+            if (location === "") {
+                locationError.innerText = "Location is required";
+                valid = false;
+            } else {
+                locationError.innerText = "";
+            }
+
+            // Description Validation
+            const description = document.getElementById("description").value.trim();
+            const descError = document.getElementById("descError");
+            if (description.length < 10) {
+                descError.innerText = "Description must be at least 10 characters long";
+                valid = false;
+            } else {
+                descError.innerText = "";
+            }
+
+            if (!valid) {
+                event.preventDefault(); // Stop form submission
+            }
+        });
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>

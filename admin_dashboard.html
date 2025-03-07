@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #5e72c8, #9a47f2);
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+<nav class="gradient-bg p-4 shadow-lg">
+  <div class="container mx-auto flex justify-between items-center">
+    <h1 class="text-white text-2xl font-bold">Admin Dashboard</h1>
+    <button onclick="logout()" class="bg-red-600 px-4 py-2 text-white rounded">Logout</button>
+  </div>
+</nav>
+
+<div class="container mx-auto p-10">
+  <h2 class="text-3xl font-bold mb-6">Complaint List</h2>
+  <table class="w-full bg-white shadow-lg rounded-lg overflow-hidden">
+    <thead class="bg-purple-600 text-white">
+      <tr>
+        <th class="p-4">Complaint ID</th>
+        <th class="p-4">User Name</th>
+        <th class="p-4">Status</th>
+        <th class="p-4">Actions</th>
+      </tr>
+    </thead>
+    <tbody id="complaintTable">
+      <!-- Complaints will be added here dynamically -->
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const complaints = [
+    { id: 1, username: 'John Doe', status: 'Submitted' },
+    { id: 2, username: 'Jane Smith', status: 'In Progress' }
+  ];
+
+  function loadComplaints() {
+    const table = document.getElementById('complaintTable');
+    table.innerHTML = '';
+
+    complaints.forEach((complaint, index) => {
+      const row = `
+        <tr>
+          <td class="p-4">${complaint.id}</td>
+          <td class="p-4">${complaint.username}</td>
+          <td class="p-4">${complaint.status}</td>
+          <td class="p-4">
+            <button onclick="updateStatus(${index})" class="bg-purple-600 px-4 py-2 text-white rounded">Update</button>
+            <button onclick="deleteComplaint(${index})" class="bg-red-600 px-4 py-2 text-white rounded ml-2">Delete</button>
+            <button onclick="updateComplaintStatus('${complaint.status}')" class="bg-green-500 px-4 py-2 text-white rounded ml-2">Save Status</button>
+          </td>
+        </tr>
+      `;
+      table.innerHTML += row;
+    });
+  }
+
+  function updateStatus(index) {
+    const newStatus = prompt('Enter New Status (Submitted, Assigned, In Progress, Resolved):');
+    if (newStatus) {
+      complaints[index].status = newStatus;
+      loadComplaints();
+    }
+  }
+
+  function deleteComplaint(index) {
+    complaints.splice(index, 1);
+    loadComplaints();
+  }
+
+  function logout() {
+    alert('Admin Logged Out');
+    window.location.href = 'login.html';
+  }
+
+  function updateComplaintStatus(newStatus) {
+    localStorage.setItem('complaintStatus', newStatus);
+    alert(`Complaint Status Updated to: ${newStatus}`);
+  }
+
+  window.onload = loadComplaints;
+</script>
+</body>
+</html>
